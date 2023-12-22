@@ -1,7 +1,8 @@
+
 pipeline {
 	agent any 
 	stages{
-		stage('roy kimaru k'){
+		stage('roy kimaru'){
 			steps{
 				sh 'action1'
 			}
@@ -26,10 +27,15 @@ pipeline {
 				sh 'action5'
 			}
 		}
-        stage ('rkk') {
-            steps{
-                sh 'action6'
-            }
-        }
+		stage ('wakanda'){
+			steps{
+				sh 'action6'
+			}
+		}
+		stage ('africa'){
+			steps{
+				echo "end of code"
+			}
+		}
 	}
 }
