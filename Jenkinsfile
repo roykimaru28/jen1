@@ -1,41 +1,81 @@
-
-pipeline {
-	agent any 
-	stages{
-		stage('roy kimaru'){
-			steps{
-				sh 'action1'
-			}
-		}
-		stage ('abiola'){
-			steps{
-				sh 'action2'
-			}
-		}
-		stage ('rogers korir'){
-			steps{
-				sh 'action3'
-			}
-		}
-		stage ('warami'){
-			steps{
-				sh 'action4'
-			}
-		}
-		stage ('silas tarus'){
-			steps{
-				sh 'action5'
-			}
-		}
-		stage ('wakanda'){
-			steps{
-				sh 'action6'
-			}
-		}
-		stage ('africa'){
-			steps{
-				echo "end of code"
-			}
-		}
-	}
+pipeline{
+    agent {
+        label 'slave1'
+    }
+    stages {
+        stage ('stepone'){
+            parallel{
+                stage ('stepone stage one'){
+                    steps{
+                        echo "This is stepone stage one"
+                    }
+                }
+                stage ('stepone stage two'){
+                    steps{
+                        echo " This is stepone stage two"
+                    }
+                }
+                stage ('stepone stage three'){
+                    agent{
+                        label 'slave2'
+                    }
+                    steps{
+                        echo "This is step three"
+                    }
+                }
+            }
+        }
+        stage('steptwo'){
+            parallel{
+                stage('steptow stage one'){
+                    agent{
+                        label 'slave1'
+                    }
+                    steps{
+                        echo "This is steptwo stage one"
+                    }
+                }
+                stage('steptwo stage two'){
+                    steps{
+                        echo "This is steptwo stage two"
+                    }
+                }
+            }
+        }
+        stage('stepthree'){
+            agent{
+                label 'slave2'
+            }
+            steps{
+                echo "This is step three"
+            }
+        }
+        stage('stepfour'){
+            parallel{
+                stage('stepfour stage one'){
+                    when{
+                        branch 'feature'
+                    }
+                    steps{
+                        echo "I am sleeping"
+                    }
+                }
+                stage('stepfour'){
+                    steps{
+                        echo "This is up"
+                    }
+                }
+                stage('last step'){
+                    steps{
+                        echo "The last build"
+                    }
+                }
+            }
+        }
+        stage('scripted'){
+            steps{
+                sh 'ps -ef'
+            }
+        }
+    }
 }
